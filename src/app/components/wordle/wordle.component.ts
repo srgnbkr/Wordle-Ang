@@ -37,12 +37,14 @@ const LETTERS = (() => {
     'm',
     'n',
     'o',
+    'ö',
     'p',
     'r',
     's',
     'ş',
     't',
     'u',
+    'ü',
     'v',
     'y',
     'z',
@@ -59,7 +61,9 @@ const LETTERS = (() => {
 })
 export class WordleComponent implements OnInit {
   @ViewChildren('tryContainer') tryContainers!: QueryList<ElementRef>;
+
   readonly tries: Try[] = [];
+  readonly LetterState = LetterState;
   private targetWordLettersCounts: { [letter: string]: number } = {};
   infoMessage = '';
   fadeOutInfoMessage = false;
@@ -137,7 +141,7 @@ export class WordleComponent implements OnInit {
   }
 
   //
-  private checkCurrentTry() {
+  private async checkCurrentTry() {
     const currentTry = this.tries[this.numberSubmitettedTries];
     if (currentTry.letters.some((letter) => letter.text === '')) {
       this.showInfoMessage('Lütfen tüm harfleri giriniz');
@@ -161,6 +165,7 @@ export class WordleComponent implements OnInit {
       return;
     }
 
+    const targetWordLettersCounts = { ...this.targetWordLettersCounts };
     const states: LetterState[] = [];
 
     for (let i = 0; i < WORD_LENGTH; i++) {
@@ -168,14 +173,34 @@ export class WordleComponent implements OnInit {
       const currentLetter = currentTry.letters[i];
       const got = currentLetter.text.toLocaleLowerCase();
       let state = LetterState.WRONG;
-      if (expected === got) {
+      if (expected === got && targetWordLettersCounts[got] > 0) {
+        targetWordLettersCounts[expected]--;
         state = LetterState.FULL_MATCH;
-      } else if (this.targetWord.includes(got)) {
+      } else if (
+        this.targetWord.includes(got) &&
+        targetWordLettersCounts[got] > 0
+      ) {
+        targetWordLettersCounts[got]--;
         state = LetterState.PARTIAL_MATCH;
       }
+
       states.push(state);
     }
     console.log(states);
+
+    const tryContainer = this.tryContainers.get(this.numberSubmitettedTries)
+      ?.nativeElement as HTMLElement;
+
+    const letterElements = tryContainer.querySelectorAll('.letter-container');
+
+    for (let i = 0; i < letterElements.length; i++) {
+      const currentLetterElements = letterElements[i];
+      currentLetterElements.classList.add('fold');
+      await this.wait(180);
+      currentTry.letters[i].state = states[i];
+      currentLetterElements.classList.remove('fold');
+      await this.wait(180);
+    }
   }
 
   private showInfoMessage(message: string) {
@@ -191,6 +216,14 @@ export class WordleComponent implements OnInit {
         this.fadeOutInfoMessage = false;
       }, 500);
     }, 2000);
+  }
+
+  private async wait(ms: number) {
+    await new Promise<void>((resolve) =>
+      setTimeout(() => {
+        resolve();
+      }, ms)
+    );
   }
 
   ngOnInit(): void {}
