@@ -27,6 +27,11 @@
       display: flex;
       margin-bottom: 10px;
 
+      &.shake{
+        animation-name: shake;
+        animation-duration: 500ms;
+      }
+
       .letter-container {
         width: 70px;
         height: 70px;
@@ -101,5 +106,29 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+//Geçerli  olmayan bir kelime girildiğinde kutucuklar sallanacak :))
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+
+  40%,
+  60% {
+    transform: translateX(4px);
   }
 }

@@ -1,7 +1,15 @@
 import { LetterState } from './../../interfaces/letterState';
 import { Letter } from './../../interfaces/letter';
 import { Try } from './../../interfaces/try';
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
+import { WORDS } from '../../constants/words';
 
 //Kelimenin uzunluğu
 const WORD_LENGTH = 5;
@@ -50,9 +58,13 @@ const LETTERS = (() => {
   styleUrls: ['./wordle.component.scss'],
 })
 export class WordleComponent implements OnInit {
+  @ViewChildren('tryContainer') tryContainers!: QueryList<ElementRef>;
   readonly tries: Try[] = [];
+  private targetWordLettersCounts: { [letter: string]: number } = {};
   infoMessage = '';
   fadeOutInfoMessage = false;
+
+  private targetWord = '';
 
   //Harfin indexini bulur
   private currentLetterIndex = 0;
@@ -67,6 +79,27 @@ export class WordleComponent implements OnInit {
       }
       this.tries.push({ letters });
     }
+
+    const numberWords = WORDS.length;
+    //TODO:Random kelime seçmemizi sağlayacak
+    while (true) {
+      const index = Math.floor(Math.random() * numberWords);
+      const word = WORDS[index];
+      if (word.length === WORD_LENGTH) {
+        this.targetWord = word.toLocaleLowerCase();
+        break;
+      }
+    }
+    console.log('targetWord', this.targetWord);
+
+    for (const letter of this.targetWord) {
+      const count = this.targetWordLettersCounts[letter];
+      if (count == null) {
+        this.targetWordLettersCounts[letter] = 0;
+      }
+      this.targetWordLettersCounts[letter]++;
+    }
+    console.log(this.targetWordLettersCounts);
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -110,6 +143,39 @@ export class WordleComponent implements OnInit {
       this.showInfoMessage('Lütfen tüm harfleri giriniz');
       return;
     }
+    const wordFromCurrentTry = currentTry.letters
+      .map((letter) => letter.text)
+      .join('')
+      .toLocaleUpperCase();
+    console.log('wordFromCurrentTry', wordFromCurrentTry);
+
+    if (!WORDS.includes(wordFromCurrentTry)) {
+      this.showInfoMessage('Kelieme bulunamadı');
+      //Geçerli olmayan bir kelime girilirse kutular sallanır.
+      const tryContainer = this.tryContainers.get(this.numberSubmitettedTries)
+        ?.nativeElement as HTMLElement;
+      tryContainer.classList.add('shake');
+      setTimeout(() => {
+        tryContainer.classList.remove('shake');
+      }, 500);
+      return;
+    }
+
+    const states: LetterState[] = [];
+
+    for (let i = 0; i < WORD_LENGTH; i++) {
+      const expected = this.targetWord[i];
+      const currentLetter = currentTry.letters[i];
+      const got = currentLetter.text.toLocaleLowerCase();
+      let state = LetterState.WRONG;
+      if (expected === got) {
+        state = LetterState.FULL_MATCH;
+      } else if (this.targetWord.includes(got)) {
+        state = LetterState.PARTIAL_MATCH;
+      }
+      states.push(state);
+    }
+    console.log(states);
   }
 
   private showInfoMessage(message: string) {
