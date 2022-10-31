@@ -201,6 +201,7 @@ export class WordleComponent implements OnInit {
       currentLetterElements.classList.remove('fold');
       await this.wait(180);
     }
+    this.numberSubmitettedTries++;
   }
 
   private showInfoMessage(message: string) {
