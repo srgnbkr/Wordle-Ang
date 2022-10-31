@@ -1,5 +1,11 @@
 # WordleAng
 
+## Angular İle Türkçe-Wordle
+### Şimdilik Sadece A-Harfini içeriyor :)
+
+https://user-images.githubusercontent.com/53319517/199066271-8f852b9f-be11-4cd7-9b94-7e2b33d47517.mp4
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.1.
 
 ## Development server
