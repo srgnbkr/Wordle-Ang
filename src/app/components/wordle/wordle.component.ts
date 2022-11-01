@@ -70,6 +70,9 @@ export class WordleComponent implements OnInit {
 
   private targetWord = '';
 
+  //True ise oyunu kazandı bitti. değilse devam et...
+  private won = false;
+
   //Harfin indexini bulur
   private currentLetterIndex = 0;
 
@@ -114,6 +117,10 @@ export class WordleComponent implements OnInit {
 
   //Harf girişini kontrol eder
   private handleClickKey(key: string) {
+    if (this.won) {
+      return;
+    }
+
     if (LETTERS[key.toLocaleLowerCase()]) {
       if (
         this.currentLetterIndex <
@@ -204,21 +211,46 @@ export class WordleComponent implements OnInit {
       await this.wait(180);
     }
     this.numberSubmitettedTries++;
+
+    //Kelimeyi bulmuşşsa harfler zıplar ve mesaj verir...
+    if(states.every(state => state === LetterState.FULL_MATCH)){
+      this.showInfoMessage("Tebrikler Kelimeyi Buldunuz");
+      this.won = true;
+
+      //Bounce animation
+      for(let i = 0; i <letterElements.length; i ++){
+        const currentLetterElement = letterElements[i];
+        currentLetterElement.classList.add('bounce');
+        await this.wait(160);
+      }
+      return;
+
+
+    }
+
+    //Hakkını bitirmişşse kelimeyi gösterir...
+    if(this.numberSubmitettedTries === NUM_TRIES){
+      this.showInfoMessage(this.targetWord.toLocaleUpperCase(),false);
+      return;
+    }
   }
 
-  private showInfoMessage(message: string) {
+  private showInfoMessage(message: string,hide =true) {
     //TODO: Burayı observable ile yapmayı deneyebilirsin...
     //TODO:Subject mi olmalı yoksa observable mi?
     //TODO: Subject ile yaparsan, herhangi bir componentten mesaj gönderilebilir.
     //TODO: Observable ile yaparsan, sadece bu componentten mesaj gönderilebilir.
     this.infoMessage = message;
-    setTimeout(() => {
-      this.fadeOutInfoMessage = true;
+    if(hide){
       setTimeout(() => {
-        this.infoMessage = '';
-        this.fadeOutInfoMessage = false;
-      }, 500);
-    }, 2000);
+        this.fadeOutInfoMessage = true;
+        setTimeout(() => {
+          this.infoMessage = '';
+          this.fadeOutInfoMessage = false;
+        }, 500);
+      }, 2000);
+    }
+
   }
 
   private async wait(ms: number) {

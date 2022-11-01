@@ -70,6 +70,11 @@
         &.fold{
           transform: scaleY(0);
         }
+
+        &.bounce {
+          animation-name: bounce;
+          animation-duration: 1s;
+        }
       }
     }
   }
@@ -92,7 +97,7 @@
 
   .info-message {
     position: absolute;
-    top: 170px;
+    top: 200px;
     padding: 16px 24px;
     background-color: purple;
     color: white;
@@ -149,5 +154,26 @@
   40%,
   60% {
     transform: translateX(4px);
+  }
+}
+
+@keyframes bounce{
+  0%,20%{
+    transform: translateY(0);
+  }
+  40%{
+    transform: translateY(-30px);
+  }
+  50%{
+    transform: translateY(5px);
+  }
+  60%{
+    transform: translateY(-15px);
+  }
+  80%{
+    transform: translateY(2px);
+  }
+  100%{
+    transform: translateY(0);
   }
 }
