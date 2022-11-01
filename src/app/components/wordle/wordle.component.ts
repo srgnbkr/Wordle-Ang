@@ -82,6 +82,7 @@ export class WordleComponent implements OnInit {
         letters.push({ text: '', state: LetterState.PENDIG });
       }
       this.tries.push({ letters });
+
     }
 
     const numberWords = WORDS.length;
@@ -140,7 +141,7 @@ export class WordleComponent implements OnInit {
     this.tries[tryIndex].letters[letterIndex].text = letter;
   }
 
-  //
+  //TODO:Devamı gelecek...
   private async checkCurrentTry() {
     const currentTry = this.tries[this.numberSubmitettedTries];
     if (currentTry.letters.some((letter) => letter.text === '')) {
@@ -185,6 +186,7 @@ export class WordleComponent implements OnInit {
       }
 
       states.push(state);
+
     }
     console.log(states);
 
