@@ -93,6 +93,58 @@
 
   .keyboard-container {
     margin-bottom: 12px;
+
+    .row{
+      display: flex;
+      align-items: center;
+      margin-top: 6px;
+
+      &.row1{
+        margin-right: 6px;
+        margin-left: -23px;
+      }
+    }
+
+    .key{
+      height: 58px;
+      min-width: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      background-color: #d3d6da;
+      font-size: 13px;
+      font-weight: bold;
+      user-select: none;
+      margin: 0 4px;
+
+      &.enter{
+        padding: 0 11px;
+        text-transform: uppercase;
+      }
+
+      &.match{
+        background-color: green;
+        color: white;
+      }
+
+      &.partial{
+        background-color: #c9b458;
+        color: white;
+      }
+
+      &.wrong{
+        background-color: #86888a;
+        color: white;
+      }
+
+      &:hover{
+        background-color: #c1c4c8;
+      }
+    }
+
+
   }
 
   .info-message {

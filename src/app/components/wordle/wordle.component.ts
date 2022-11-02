@@ -64,6 +64,15 @@ export class WordleComponent implements OnInit {
 
   readonly tries: Try[] = [];
   readonly LetterState = LetterState;
+
+  readonly keyboardKeys = [
+    ['E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Ğ', 'Ü'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ş', 'İ'],
+    ['Enter', 'Z', 'C', 'V', 'B', 'N', 'M', 'Ö', 'Ç', 'Backspace'],
+  ];
+
+  readonly currentLetterStates: { [key: string]: LetterState } = {};
+
   private targetWordLettersCounts: { [letter: string]: number } = {};
   infoMessage = '';
   fadeOutInfoMessage = false;
@@ -85,7 +94,6 @@ export class WordleComponent implements OnInit {
         letters.push({ text: '', state: LetterState.PENDIG });
       }
       this.tries.push({ letters });
-
     }
 
     const numberWords = WORDS.length;
@@ -115,8 +123,24 @@ export class WordleComponent implements OnInit {
     this.handleClickKey(event.key);
   }
 
+  //Girilen kelimede harf tutuyorsa klavyede yeşil,yeri yanlışşsa sarı, hiçbiri değilse gri renk verir
+  getKeyClass(key: string): string {
+    const state = this.currentLetterStates[key.toLocaleLowerCase()];
+
+    switch (state) {
+      case LetterState.FULL_MATCH:
+        return 'match key';
+      case LetterState.PARTIAL_MATCH:
+        return 'partial key';
+      case LetterState.WRONG:
+        return 'wrong key';
+      default:
+        return 'key';
+    }
+  }
+
   //Harf girişini kontrol eder
-  private handleClickKey(key: string) {
+ handleClickKey(key: string) {
     if (this.won) {
       return;
     }
@@ -193,7 +217,6 @@ export class WordleComponent implements OnInit {
       }
 
       states.push(state);
-
     }
     console.log(states);
 
@@ -210,38 +233,48 @@ export class WordleComponent implements OnInit {
       currentLetterElements.classList.remove('fold');
       await this.wait(180);
     }
+
+    for (let i = 0; i < WORD_LENGTH; i++) {
+      const curLetter = currentTry.letters[i];
+      const got = curLetter.text.toLocaleLowerCase();
+      const curStoredState = this.currentLetterStates[got];
+      const targetState = states[i];
+
+      if (curStoredState == null || targetState > curStoredState) {
+        this.currentLetterStates[got] = targetState;
+      }
+    }
+
     this.numberSubmitettedTries++;
 
     //Kelimeyi bulmuşşsa harfler zıplar ve mesaj verir...
-    if(states.every(state => state === LetterState.FULL_MATCH)){
-      this.showInfoMessage("Tebrikler Kelimeyi Buldunuz");
+    if (states.every((state) => state === LetterState.FULL_MATCH)) {
+      this.showInfoMessage('Tebrikler Kelimeyi Buldunuz');
       this.won = true;
 
       //Bounce animation
-      for(let i = 0; i <letterElements.length; i ++){
+      for (let i = 0; i < letterElements.length; i++) {
         const currentLetterElement = letterElements[i];
         currentLetterElement.classList.add('bounce');
         await this.wait(160);
       }
       return;
-
-
     }
 
     //Hakkını bitirmişşse kelimeyi gösterir...
-    if(this.numberSubmitettedTries === NUM_TRIES){
-      this.showInfoMessage(this.targetWord.toLocaleUpperCase(),false);
+    if (this.numberSubmitettedTries === NUM_TRIES) {
+      this.showInfoMessage(this.targetWord.toLocaleUpperCase(), false);
       return;
     }
   }
 
-  private showInfoMessage(message: string,hide =true) {
+  private showInfoMessage(message: string, hide = true) {
     //TODO: Burayı observable ile yapmayı deneyebilirsin...
     //TODO:Subject mi olmalı yoksa observable mi?
     //TODO: Subject ile yaparsan, herhangi bir componentten mesaj gönderilebilir.
     //TODO: Observable ile yaparsan, sadece bu componentten mesaj gönderilebilir.
     this.infoMessage = message;
-    if(hide){
+    if (hide) {
       setTimeout(() => {
         this.fadeOutInfoMessage = true;
         setTimeout(() => {
@@ -250,7 +283,6 @@ export class WordleComponent implements OnInit {
         }, 500);
       }, 2000);
     }
-
   }
 
   private async wait(ms: number) {
