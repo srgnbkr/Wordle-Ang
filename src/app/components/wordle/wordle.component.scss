@@ -27,7 +27,7 @@
       display: flex;
       margin-bottom: 10px;
 
-      &.shake{
+      &.shake {
         animation-name: shake;
         animation-duration: 500ms;
       }
@@ -52,22 +52,26 @@
           animation-name: letter-pop;
           animation-duration: 130ms;
         }
-        &.match{
+
+        &.match {
           background-color: green;
           border-color: green;
           color: white;
         }
-        &.partial{
-          background-color: 	#d9d900;
-          border-color: 	#d9d900;
+
+        &.partial {
+          background-color: #d9d900;
+          border-color: #d9d900;
           color: white;
         }
-        &.wrong{
+
+        &.wrong {
           background-color: #86888a;
           border-color: #86888a;
           color: white;
         }
-        &.fold{
+
+        &.fold {
           transform: scaleY(0);
         }
 
@@ -93,6 +97,57 @@
 
   .keyboard-container {
     margin-bottom: 12px;
+
+    .row {
+      display: flex;
+      align-items: center;
+      margin-top: 6px;
+
+      &.row0 {
+        margin-left: 12px;
+      }
+
+
+    }
+
+    .key {
+      height: 58px;
+      min-width: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      background-color: #d3d6da;
+      font-size: 13px;
+      font-weight: bold;
+      user-select: none;
+      margin: 0 4px;
+
+      &.enter {
+        padding: 0 11px;
+        text-transform: uppercase;
+      }
+
+      &.match {
+        background-color: green;
+        color: white;
+      }
+
+      &.partial {
+        background-color: #c9b458;
+        color: white;
+      }
+
+      &.wrong {
+        background-color: #86888a;
+        color: white;
+      }
+
+      &:hover {
+        background-color: #c1c4c8;
+      }
+    }
   }
 
   .info-message {
@@ -108,17 +163,14 @@
 
     &.show {
       opacity: 1;
-
     }
 
     &.fade-out {
       opacity: 0;
       transition: opacity 500ms;
     }
-
   }
 }
-
 
 //Animation
 @keyframes letter-pop {
@@ -157,29 +209,95 @@
   }
 }
 
-@keyframes bounce{
-  0%,20%{
+@keyframes bounce {
+  0%,
+  20% {
     transform: translateY(0);
   }
-  40%{
+  40% {
     transform: translateY(-30px);
   }
-  50%{
+  50% {
     transform: translateY(5px);
   }
-  60%{
+  60% {
     transform: translateY(-15px);
   }
-  80%{
+  80% {
     transform: translateY(2px);
   }
-  100%{
+  100% {
     transform: translateY(0);
   }
 }
 
-@media screen {
+@media screen and (max-width: 530px) {
+  .container {
+    .main {
+      .try-container {
+        .letter-container {
+          width: 65px;
 
+        }
+      }
+    }
+
+    .keyboard-container {
+      margin-bottom: 12px;
+
+
+      .backspace {
+        width: 2.7vh;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+
+
+      }
+
+      .key {
+        height: 58px;
+        min-width: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 4px;
+        background-color: #d3d6da;
+        font-size: 13px;
+        font-weight: bold;
+        user-select: none;
+        margin: 0 4px;
+
+        &.enter {
+          padding: 0 11px;
+          text-transform: uppercase;
+          width: 20px;
+          height: 55px;
+        }
+
+
+        &.match {
+          background-color: green;
+          color: white;
+        }
+
+        &.partial {
+          background-color: #c9b458;
+          color: white;
+        }
+
+        &.wrong {
+          background-color: #86888a;
+          color: white;
+        }
+
+        &:hover {
+          background-color: #c1c4c8;
+        }
+      }
+    }
+  }
 }
-
-
