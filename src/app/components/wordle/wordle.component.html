@@ -1,7 +1,7 @@
 <div class="container">
   <div class="title-container">
     <div class="title">ORDU-EVİ WORDLE</div>
-    <div class="subtitle">Wordle Türkçe Sadece A-Harfi  Gerisi Yakında :)</div>
+    <div class="subtitle">Wordle Türkçe Sadece A-Harfi Gerisi Yakında :)</div>
   </div>
   <div class="main">
     <div class="try-container" *ngFor="let try of tries" #tryContainer>
@@ -16,12 +16,13 @@
   </div>
   <div class="keyboard-container">
     <div [class]="['row'+i,'row'].join(' ')" *ngFor="let row of keyboardKeys; let i = index">
-      <div *ngFor="let key of row" [class]="getKeyClass(key)" [class.enter]="key ==='Enter'" (click)="handleClickKey(key)">
+      <div *ngFor="let key of row" [class]="getKeyClass(key)" [class.enter]="key ==='Enter'"
+           (click)="handleClickKey(key)">
         <div *ngIf="key !=='Backspace'; else backspace">
           {{key}}
         </div>
         <ng-template #backspace>
-          <img src="../assets/backspace.svg" alt="">
+          <img class="backspace" src="../assets/backspace.svg" alt="">
         </ng-template>
 
       </div>

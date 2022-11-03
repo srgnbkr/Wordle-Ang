@@ -52,21 +52,25 @@
           animation-name: letter-pop;
           animation-duration: 130ms;
         }
+
         &.match {
           background-color: green;
           border-color: green;
           color: white;
         }
+
         &.partial {
           background-color: #d9d900;
           border-color: #d9d900;
           color: white;
         }
+
         &.wrong {
           background-color: #86888a;
           border-color: #86888a;
           color: white;
         }
+
         &.fold {
           transform: scaleY(0);
         }
@@ -99,10 +103,11 @@
       align-items: center;
       margin-top: 6px;
 
-      &.row1 {
-        margin-right: 6px;
-        margin-left: -23px;
+      &.row0 {
+        margin-left: 12px;
       }
+
+
     }
 
     .key {
@@ -236,21 +241,19 @@
         }
       }
     }
+
     .keyboard-container {
       margin-bottom: 12px;
+
+
+      .backspace {
+        width: 2.7vh;
+      }
 
       .row {
         display: flex;
         align-items: center;
-        margin-top: 6px;
-        margin-left: 18px;
 
-        &.row3{
-
-
-          width: 20px;
-
-        }
 
       }
 
