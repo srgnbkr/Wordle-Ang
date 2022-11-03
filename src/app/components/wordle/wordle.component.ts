@@ -87,6 +87,7 @@ export class WordleComponent implements OnInit {
 
   private numberSubmitettedTries = 0;
 
+  //TODO:Componentlere ayırarak tekrar dene. Keyboard ayrı, wordle ayrı. Json-serverden kelimeleri çekebiliriz.
   constructor() {
     for (let i = 0; i < NUM_TRIES; i++) {
       const letters: Letter[] = [];
