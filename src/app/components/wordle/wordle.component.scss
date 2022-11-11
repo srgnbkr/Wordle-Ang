@@ -106,8 +106,6 @@
       &.row0 {
         margin-left: 12px;
       }
-
-
     }
 
     .key {
@@ -234,48 +232,54 @@
 @media screen and (max-width: 530px) {
   .container {
     .main {
-
-
       .try-container {
-
-
         .letter-container {
           width: 70px;
           height: 70px;
 
           margin: 0 6px 6px 0px;
+        }
+      }
+    }
+    .keyboard-container {
+      margin-bottom: 12px;
 
+      .row {
+        display: flex;
+        align-items: center;
+        margin-top: 6px;
 
+        &.row0 {
+          margin-left: 22px;
+        }
+        &.row1 {
+          margin-left: 6px;
+        }
+      }
+
+      .key {
+        height: 58px;
+        min-width: 26px;
+
+        &.enter {
+          width: 1.5vh;
         }
       }
     }
   }
-
 }
 
 @media screen and (max-width: 376px) {
   .container {
     .main {
-
-
       .try-container {
-
-
         .letter-container {
           width: 65px;
           height: 55px;
 
           margin: 0 6px 6px 0px;
-
-
         }
       }
     }
   }
-
 }
-
-
-
-
-
