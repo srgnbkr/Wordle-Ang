@@ -281,5 +281,30 @@
         }
       }
     }
+    .keyboard-container {
+      margin-bottom: 12px;
+
+      .row {
+        display: flex;
+        align-items: center;
+        margin-top: 6px;
+
+        &.row0 {
+          margin-left: 22px;
+        }
+        &.row1 {
+          margin-left: 6px;
+        }
+      }
+
+      .key {
+        height: 45px;
+        min-width: 24px;
+
+        &.enter {
+          width: 1.5vh;
+        }
+      }
+    }
   }
 }
