@@ -262,7 +262,7 @@ export class WordleComponent implements OnInit {
       return;
     }
 
-    //Hakkını bitirmişşse kelimeyi gösterir...
+    //TODO : Burada oyun bittikten sonra oyunu sıfırlasak nasıl olur
     if (this.numberSubmitettedTries === NUM_TRIES) {
       this.showInfoMessage(this.targetWord.toLocaleUpperCase(), false);
       return;
