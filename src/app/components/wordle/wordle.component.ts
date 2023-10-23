@@ -89,34 +89,7 @@ export class WordleComponent implements OnInit {
 
   //TODO:Componentlere ayırarak tekrar dene. Keyboard ayrı, wordle ayrı. Json-serverden kelimeleri çekebiliriz.
   constructor() {
-    for (let i = 0; i < NUM_TRIES; i++) {
-      const letters: Letter[] = [];
-      for (let j = 0; j < WORD_LENGTH; j++) {
-        letters.push({ text: '', state: LetterState.PENDIG });
-      }
-      this.tries.push({ letters });
-    }
 
-    const numberWords = WORDS.length;
-    //TODO:Random kelime seçmemizi sağlayacak
-    while (true) {
-      const index = Math.floor(Math.random() * numberWords);
-      const word = WORDS[index];
-      if (word.length === WORD_LENGTH) {
-        this.targetWord = word.toLocaleLowerCase();
-        break;
-      }
-    }
-    console.log('targetWord', this.targetWord);
-
-    for (const letter of this.targetWord) {
-      const count = this.targetWordLettersCounts[letter];
-      if (count == null) {
-        this.targetWordLettersCounts[letter] = 0;
-      }
-      this.targetWordLettersCounts[letter]++;
-    }
-    console.log(this.targetWordLettersCounts);
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -294,5 +267,34 @@ export class WordleComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    for (let i = 0; i < NUM_TRIES; i++) {
+      const letters: Letter[] = [];
+      for (let j = 0; j < WORD_LENGTH; j++) {
+        letters.push({ text: '', state: LetterState.PENDIG });
+      }
+      this.tries.push({ letters });
+    }
+
+    const numberWords = WORDS.length;
+    //TODO:Random kelime seçmemizi sağlayacak
+    while (true) {
+      const index = Math.floor(Math.random() * numberWords);
+      const word = WORDS[index];
+      if (word.length === WORD_LENGTH) {
+        this.targetWord = word.toLocaleLowerCase();
+        break;
+      }
+    }
+    console.log('targetWord', this.targetWord);
+
+    for (const letter of this.targetWord) {
+      const count = this.targetWordLettersCounts[letter];
+      if (count == null) {
+        this.targetWordLettersCounts[letter] = 0;
+      }
+      this.targetWordLettersCounts[letter]++;
+    }
+    console.log(this.targetWordLettersCounts);  
+  }
 }
